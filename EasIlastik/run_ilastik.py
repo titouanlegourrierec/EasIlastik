@@ -3,17 +3,28 @@ import subprocess
 from EasIlastik.find_ilastik import find_ilastik
 from EasIlastik.utils import get_image_paths
 
-def run_ilastik(input_path, project_path, result_base_path, ilastik_script_path = find_ilastik() ,export_source="Simple Segmentation", output_format="png"):
+def run_ilastik(input_path : str,
+                project_path : str,
+                result_base_path : str,
+                ilastik_script_path : str = find_ilastik(),
+                export_source : str ="Simple Segmentation",
+                output_format : str ="png"):
     """
-    This function runs the Ilastik software in headless mode with the specified parameters.
+    Execute the Ilastik software in headless mode with the specified parameters.
 
     Parameters:
     input_path (str): The path to the image file or folder to be processed.
-    ilastik_script_path (str): The path to the Ilastik script.
     project_path (str): The path to the Ilastik project file.
     result_base_path (str): The base path where the result will be saved.
-    export_source (str, optional): The type of data to export. Default is "Simple Segmentation". Must be one of ["Probabilities", "Simple Segmentation", "Uncertainty", "Features", "Labels"].
-    output_format (str, optional): The format of the output file. Default is "png". Must be one oof ["bmp", "gif", "hdr", "jpeg", "jpg", "pbm", "pgm", "png", "pnm", "ppm", "ras", "tif", "tiff", "xv", "bmp sequence", "gif sequence", "hdr sequence", "jpeg sequence", "jpg sequence", "pbm sequence", "pgm sequence", "png sequence", "pnm sequence", "ppm sequence", "ras sequence", "tif sequence", "tiff sequence", "xv sequence", "multipage tiff", "multipage tiff sequence", "hdf5", "compressed hdf5", "numpy, dvid"].
+    ilastik_script_path (str, optional): The path to the Ilastik script. If not provided, it will attempt to find the path automatically.
+    export_source (str, optional): The type of data to export. Default is "Simple Segmentation".
+        Must be one of ["Probabilities", "Simple Segmentation", "Uncertainty", "Features", "Labels"].
+    output_format (str, optional): The format of the output file. Default is "png".
+        Must be one of ["bmp", "gif", "hdr", "jpeg", "jpg", "pbm", "pgm", "png", "pnm", "ppm", "ras",
+        "tif", "tiff", "xv", "bmp sequence", "gif sequence", "hdr sequence", "jpeg sequence",
+        "jpg sequence", "pbm sequence", "pgm sequence", "png sequence", "pnm sequence",
+        "ppm sequence", "ras sequence", "tif sequence", "tiff sequence", "xv sequence",
+        "multipage tiff", "multipage tiff sequence", "hdf5", "compressed hdf5", "numpy, dvid"].
 
     Returns:
     None
@@ -24,7 +35,7 @@ def run_ilastik(input_path, project_path, result_base_path, ilastik_script_path 
     """
 
     if ilastik_script_path is None:
-        print("ilastik_script_path is None. Please check the path format at https://learn.microsoft.com/fr-fr/dotnet/standard/io/file-path-formats")
+        print("ilastik_script_path is None. Please check the path format at ...")
         return
     
     ALLOWED_SOURCES = ["Probabilities", "Simple Segmentation", "Uncertainty", "Features", "Labels"]
