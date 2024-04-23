@@ -16,8 +16,8 @@ def run_ilastik(input_path : str,
                 project_path : str,
                 result_base_path : str,
                 ilastik_script_path : str = find_ilastik(),
-                export_source : str ="Simple Segmentation",
-                output_format : str ="png"):
+                export_source : str = "Simple Segmentation",
+                output_format : str = "png"):
     """
     Execute the Ilastik software in headless mode with the specified parameters.
 
@@ -115,32 +115,11 @@ def run_ilastik(input_path : str,
 
 ##########################################################################################################################################
 
-def treshold_probabilities(file_or_dir_path, threshold, below_threshold_color, channel_colors):
-    """
-    Creates a color image from a single .h5 file or all .h5 files in a directory.
-
-    Parameters:
-    file_or_dir_path (str): Path to the .h5 file or directory containing .h5 files.
-    threshold (float): Threshold value for color mapping.
-    below_threshold_color (list): RGB color for values below the threshold.
-    channel_colors (list): List of RGB colors for each channel.
-
-    Returns:
-    None. The function saves the color image(s) in the same location as the input file(s) with a .png extension.
-    """
-    if os.path.isdir(file_or_dir_path):
-        # If the path is a directory, apply the function to all .h5 files in the directory
-        for filename in os.listdir(file_or_dir_path):
-            if filename.endswith(".h5"):
-                file_path = os.path.join(file_or_dir_path, filename)
-                process_single_file(file_path, threshold, below_threshold_color, channel_colors)
-    else:
-        # If the path is not a directory, assume it's a file and apply the function to it
-        process_single_file(file_or_dir_path, threshold, below_threshold_color, channel_colors)
-
-
-
-def process_single_file(file_path, threshold, below_threshold_color, channel_colors, deletetion = True):
+def process_single_file(file_path,
+                        threshold,
+                        below_threshold_color,
+                        channel_colors,
+                        deletetion = True):
     """
     Processes a single .h5 file and creates a color image from it.
 
@@ -181,6 +160,11 @@ def process_single_file(file_path, threshold, below_threshold_color, channel_col
 
     data = f['exported_data']
 
+    # Check if the length of channel_colors is equal to the number of channels in data
+    if len(channel_colors) != data.shape[-1]:
+        f.close()
+        raise ValueError(f"The length of channel_colors must be equal to the number of channels in the data (there must be as many colors as labels annotated in the Ilastik project). Expected {data.shape[-1]}, got {len(channel_colors)}")
+
     # Find the index of the channel with the highest value for each pixel
     indices = np.argmax(data, axis=-1)
     indices = indices.astype(int)
@@ -215,6 +199,32 @@ def process_single_file(file_path, threshold, below_threshold_color, channel_col
     if deletetion:
         # Delete the h5 file
         os.remove(file_path)
+
+def treshold_probabilities(file_or_dir_path,
+                           threshold,
+                           below_threshold_color,
+                           channel_colors):
+    """
+    Creates a color image from a single .h5 file or all .h5 files in a directory.
+
+    Parameters:
+    file_or_dir_path (str): Path to the .h5 file or directory containing .h5 files.
+    threshold (float): Threshold value for color mapping.
+    below_threshold_color (list): RGB color for values below the threshold.
+    channel_colors (list): List of RGB colors for each channel.
+
+    Returns:
+    None. The function saves the color image(s) in the same location as the input file(s) with a .png extension.
+    """
+    if os.path.isdir(file_or_dir_path):
+        # If the path is a directory, apply the function to all .h5 files in the directory
+        for filename in os.listdir(file_or_dir_path):
+            if filename.endswith(".h5"):
+                file_path = os.path.join(file_or_dir_path, filename)
+                process_single_file(file_path, threshold, below_threshold_color, channel_colors)
+    else:
+        # If the path is not a directory, assume it's a file and apply the function to it
+        process_single_file(file_or_dir_path, threshold, below_threshold_color, channel_colors)
 
 ##########################################################################################################################################
 

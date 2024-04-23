@@ -46,5 +46,5 @@ def check_for_update():
     except Exception as e:
         print("An error occurred while checking for updates:", e)
 
-# Call the update check function at the start of your application
+# Call the update check function at the start of the package
 check_for_update()
