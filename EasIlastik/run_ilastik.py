@@ -200,10 +200,88 @@ def process_single_file(file_path,
         # Delete the h5 file
         os.remove(file_path)
 
+def color_treshold_probabilities(file_path,
+                                 threshold,
+                                 below_threshold_color,
+                                 channel_colors):
+    """
+    Processes a single .h5 file and creates a color image from it.
+
+    Parameters:
+    file_path (str): Path to the .h5 file.
+    threshold (float): Threshold value for color mapping. Pixels with maximum value greater than this threshold will be colored according to the color map.
+    below_threshold_color (list): RGB color for values below the threshold. Must be a list of 3 integers between 0 and 255.
+    channel_colors (list): List of RGB colors for each channel. Each color must be a list of 3 integers between 0 and 255.
+
+    Returns:
+    color_image_uint8 (numpy.ndarray): The color image as a numpy array in uint8 format. The color image is in BGR format, which is compatible with OpenCV's imwrite function.
+
+    Raises:
+    FileNotFoundError: If the file at file_path does not exist.
+    ValueError: If below_threshold_color or channel_colors do not meet the requirements, or if the file at file_path could not be opened or does not contain 'exported_data'.
+    """
+        
+    if not os.path.exists(file_path):
+        raise FileNotFoundError(f"File at {file_path} does not exist")
+    
+    if not isinstance(below_threshold_color, list) or len(below_threshold_color) != 3 or not all(isinstance(i, int) and 0 <= i <= 255 for i in below_threshold_color):
+        raise ValueError("below_threshold_color must be a list of 3 integers between 0 and 255 (RGB color format)")
+    
+    if not isinstance(channel_colors, list) or not all(isinstance(color, list) and len(color) == 3 and all(isinstance(i, int) and 0 <= i <= 255 for i in color) for color in channel_colors):
+        raise ValueError("channel_colors must be a list of lists of 3 integers between 0 and 255 (RGB color format)")
+
+    # Open the file
+    try:
+        f = h5py.File(file_path, 'r')
+    except IOError:
+        raise ValueError(f"Could not open file at {file_path}")
+
+    # Ensure the file contains 'exported_data'
+    if 'exported_data' not in f:
+        f.close()
+        raise ValueError(f"File at {file_path} does not contain 'exported_data'")
+
+    data = f['exported_data']
+
+    # Check if the length of channel_colors is equal to the number of channels in data
+    if len(channel_colors) != data.shape[-1]:
+        f.close()
+        raise ValueError(f"The length of channel_colors must be equal to the number of channels in the data (there must be as many colors as labels annotated in the Ilastik project). Expected {data.shape[-1]}, got {len(channel_colors)}")
+
+    # Find the index of the channel with the highest value for each pixel
+    indices = np.argmax(data, axis=-1)
+    indices = indices.astype(int)
+
+    # Find the maximum value for each pixel
+    max_values = np.max(data, axis=-1)
+
+    # Create a color map
+    colors = np.array([below_threshold_color] + channel_colors)
+
+    # Convert the below_threshold_color to a numpy array and add two new axes to match the shape of max_values[..., np.newaxis]
+    below_threshold_color_array = np.array(below_threshold_color)[np.newaxis, np.newaxis, :]
+
+    # Use numpy's take function to create a color map. The color map is an array of colors corresponding to the indices.
+    color_map = np.take(colors, indices + 1, axis=0)
+
+    # Use numpy's where function to create the color image. If the maximum value of a pixel is greater than the threshold, 
+    # the pixel's color is taken from the color map. Otherwise, the pixel's color is set to below_threshold_color.
+    color_image = np.where(max_values[..., np.newaxis] > threshold, color_map, below_threshold_color_array)
+
+    color_image_uint8 = color_image.astype(np.uint8)
+    color_image_uint8 = cv2.cvtColor(color_image_uint8, cv2.COLOR_RGB2BGR)
+
+    # Close the h5 file
+    f.close()
+
+    return color_image_uint8
+
+
 def treshold_probabilities(file_or_dir_path,
                            threshold,
                            below_threshold_color,
-                           channel_colors):
+                           channel_colors,
+                           deletetion = True):
     """
     Creates a color image from a single .h5 file or all .h5 files in a directory.
 
@@ -221,10 +299,10 @@ def treshold_probabilities(file_or_dir_path,
         for filename in os.listdir(file_or_dir_path):
             if filename.endswith(".h5"):
                 file_path = os.path.join(file_or_dir_path, filename)
-                process_single_file(file_path, threshold, below_threshold_color, channel_colors)
+                process_single_file(file_path, threshold, below_threshold_color, channel_colors, deletetion)
     else:
         # If the path is not a directory, assume it's a file and apply the function to it
-        process_single_file(file_or_dir_path, threshold, below_threshold_color, channel_colors)
+        process_single_file(file_or_dir_path, threshold, below_threshold_color, channel_colors, deletetion)
 
 ##########################################################################################################################################
 

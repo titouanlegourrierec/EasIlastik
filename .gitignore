@@ -4,6 +4,4 @@ dist/
 EasIlastik.egg-info/
 EasIlastik/__pycache__/
 setup.py
-test.py
 test.ipynb
-EasIlastik_examples.ipynb

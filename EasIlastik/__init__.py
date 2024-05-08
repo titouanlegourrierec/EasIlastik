@@ -12,10 +12,10 @@ __doc__ = """
     
     How to use the documentation
     ----------------------------
-    Documentation is available in two forms: docstrings provided with the code, and a standalone reference guide available from the `EasIlastik homepage ...`.
+    Documentation is available in two forms: docstrings provided with the code, and a standalone reference guide available from the `EasIlastik homepage : https://github.com/titouanlegourrierec/EasIlastik/wiki`.
 """
 
-__version__ = "0.0.1"
+__version__ = "0.0.2"
 
 import xmlrpc.client
 import sys
