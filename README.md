@@ -5,6 +5,7 @@
 <table width="100%" style="border: none;">
   <tr>
     <td align="left" style="border: none;"><b>LE GOURRIEREC Titouan</b></td>
+    <td align="left" style="border: none;"></td>
     <td align="right" style="border: none;">
       <a href="https://www.linkedin.com/in/titouanlegourrierec"><img src="https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn"></a>
       <a href="mailto:titouanlegourrieræec@icloud.com"><img src="https://img.shields.io/badge/email-%23339933.svg?style=for-the-badge&logo=mail.ru&logoColor=white" alt="Mail"></a>
