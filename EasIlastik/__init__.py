@@ -20,6 +20,10 @@ __version__ = "0.0.2"
 import xmlrpc.client
 import sys
 
+from .run_ilastik import run_ilastik
+from .run_ilastik import run_ilastik_probabilities
+from .run_ilastik import color_treshold_probabilities
+
 def get_installed_version():
     """Gets the currently installed version of the package."""
     try:
