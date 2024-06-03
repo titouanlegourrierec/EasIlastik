@@ -13,7 +13,7 @@ from EasIlastik.utils import get_image_paths
 ##########################################################################################################################################
 
 def run_ilastik(input_path : str,
-                project_path : str,
+                model_path : str,
                 result_base_path : str,
                 ilastik_script_path : str = find_ilastik(),
                 export_source : str = "Simple Segmentation",
@@ -23,7 +23,7 @@ def run_ilastik(input_path : str,
 
     Parameters:
     input_path (str): The path to the image file or folder to be processed.
-    project_path (str): The path to the Ilastik project file.
+    model_path (str): The path to the Ilastik project file.
     result_base_path (str): The base path where the result will be saved.
     ilastik_script_path (str, optional): The path to the Ilastik script. If not provided, it will attempt to find the path automatically.
     export_source (str, optional): The type of data to export. Default is "Simple Segmentation".
@@ -77,7 +77,7 @@ def run_ilastik(input_path : str,
         ilastik_args = [
             ilastik_script_path,
             "--headless",
-            "--project=" + project_path,
+            "--project=" + model_path,
             "--export_source=" + export_source,
             "--output_format=" + output_format,
             "--output_filename_format=" + result_base_path + "{nickname}_" + export_source.replace(" ", "_"),
@@ -90,7 +90,7 @@ def run_ilastik(input_path : str,
         ilastik_args = [
             ilastik_script_path,
             "--headless",
-            "--project=" + project_path,
+            "--project=" + model_path,
             "--export_source=" + export_source,
             "--output_format=" + output_format,
             "--output_filename_format=" + result_base_path + "{nickname}_" + export_source.replace(" ", "_"),
@@ -311,7 +311,7 @@ def treshold_probabilities(file_or_dir_path,
 ##########################################################################################################################################
 
 def run_ilastik_probabilities(input_path : str,
-                              project_path : str,
+                              model_path : str,
                               result_base_path : str,
                               threshold : int,
                               below_threshold_color : list,
@@ -324,7 +324,7 @@ def run_ilastik_probabilities(input_path : str,
 
     Parameters:
     input_path (str): The path to the image file or folder to be processed.
-    project_path (str): The path to the Ilastik project file.
+    model_path (str): The path to the Ilastik project file.
     result_base_path (str): The base path where the result will be saved.
     ilastik_script_path (str, optional): The path to the Ilastik script. If not provided, it will attempt to find the path automatically.
     threshold (int): The threshold above which a channel's value must be for the pixel to take its color.
@@ -335,7 +335,7 @@ def run_ilastik_probabilities(input_path : str,
     None
     """
     # Run Ilastik to create h5 files
-    run_ilastik(input_path, project_path, result_base_path, ilastik_script_path, export_source="Probabilities", output_format="hdf5")
+    run_ilastik(input_path, model_path, result_base_path, ilastik_script_path, export_source="Probabilities", output_format="hdf5")
 
     # Create color images from the h5 files
     treshold_probabilities(result_base_path, threshold, below_threshold_color, channel_colors, deletetion)
