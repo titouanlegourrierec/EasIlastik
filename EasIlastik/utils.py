@@ -1,7 +1,7 @@
 import os
 import glob
 
-def get_image_paths(image_folder):
+def get_image_paths(image_folder : str) -> list:
     """
     This function retrieves the paths of all image files in a specified folder.
 

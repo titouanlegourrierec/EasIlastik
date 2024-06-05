@@ -2,7 +2,7 @@ import platform
 import time
 import os
 
-def get_os():
+def get_os() -> str:
     """
     This function returns the name of the operating system on which the Python interpreter is running.
 
@@ -13,7 +13,7 @@ def get_os():
     return platform.system()
 
 
-def find_file(filename, start_path):
+def find_file(filename: str, start_path: str) -> str:
     """
     This function searches for a specified file starting from a specified path.
 

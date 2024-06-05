@@ -17,7 +17,7 @@ def run_ilastik(input_path : str,
                 result_base_path : str,
                 ilastik_script_path : str = find_ilastik(),
                 export_source : str = "Simple Segmentation",
-                output_format : str = "png"):
+                output_format : str = "png") -> None:
     """
     Execute the Ilastik software in headless mode with the specified parameters.
 
@@ -115,11 +115,11 @@ def run_ilastik(input_path : str,
 
 ##########################################################################################################################################
 
-def process_single_file(file_path,
-                        threshold,
-                        below_threshold_color,
-                        channel_colors,
-                        deletetion = True):
+def process_single_file(file_path : str,
+                        threshold : float,
+                        below_threshold_color : list,
+                        channel_colors : list,
+                        deletion = True) -> None:
     """
     Processes a single .h5 file and creates a color image from it.
 
@@ -196,14 +196,14 @@ def process_single_file(file_path,
     # Close the h5 file
     f.close()
 
-    if deletetion:
+    if deletion:
         # Delete the h5 file
         os.remove(file_path)
 
-def color_treshold_probabilities(file_path,
-                                 threshold,
-                                 below_threshold_color,
-                                 channel_colors):
+def color_treshold_probabilities(file_path : str,
+                                 threshold : float,
+                                 below_threshold_color : list,
+                                 channel_colors : list) -> np.ndarray:
     """
     Processes a single .h5 file and creates a color image from it.
 
@@ -277,11 +277,11 @@ def color_treshold_probabilities(file_path,
     return color_image_uint8
 
 
-def treshold_probabilities(file_or_dir_path,
-                           threshold,
-                           below_threshold_color,
-                           channel_colors,
-                           deletetion = True):
+def treshold_probabilities(file_or_dir_path : str,
+                           threshold : float,
+                           below_threshold_color : list,
+                           channel_colors : list,
+                           deletion : bool = True) -> None:
     """
     Creates a color image from a single .h5 file or all .h5 files in a directory.
 
@@ -299,10 +299,10 @@ def treshold_probabilities(file_or_dir_path,
         for filename in os.listdir(file_or_dir_path):
             if filename.endswith(".h5"):
                 file_path = os.path.join(file_or_dir_path, filename)
-                process_single_file(file_path, threshold, below_threshold_color, channel_colors, deletetion)
+                process_single_file(file_path, threshold, below_threshold_color, channel_colors, deletion)
     else:
         # If the path is not a directory, assume it's a file and apply the function to it
-        process_single_file(file_or_dir_path, threshold, below_threshold_color, channel_colors, deletetion)
+        process_single_file(file_or_dir_path, threshold, below_threshold_color, channel_colors, deletion)
 
 ##########################################################################################################################################
 
@@ -316,7 +316,7 @@ def run_ilastik_probabilities(input_path : str,
                               threshold : int,
                               below_threshold_color : list,
                               channel_colors : list,
-                              deletetion : bool = True,
+                              deletion : bool = True,
                               ilastik_script_path : str = find_ilastik()):
     """
     Process the images by first running Ilastik to create h5 files in which each channel represent the probabilities that the pixel is part of this class,
@@ -338,4 +338,4 @@ def run_ilastik_probabilities(input_path : str,
     run_ilastik(input_path, model_path, result_base_path, ilastik_script_path, export_source="Probabilities", output_format="hdf5")
 
     # Create color images from the h5 files
-    treshold_probabilities(result_base_path, threshold, below_threshold_color, channel_colors, deletetion)
+    treshold_probabilities(result_base_path, threshold, below_threshold_color, channel_colors, deletion)
