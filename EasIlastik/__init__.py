@@ -15,7 +15,10 @@ __doc__ = """
     Documentation is available in two forms: docstrings provided with the code, and a standalone reference guide available from the `EasIlastik homepage : https://github.com/titouanlegourrierec/EasIlastik/wiki`.
 """
 
-__version__ = "1.0.1"
+__version__ = "1.0.2"
+__author__ = "Titouan Le Gourrierec"
+__email__ = "titouanlegourrierec@icloud.com"
+__all__ = ["run_ilastik", "run_ilastik_probabilities", "color_treshold_probabilities"]
 
 import requests
 import subprocess

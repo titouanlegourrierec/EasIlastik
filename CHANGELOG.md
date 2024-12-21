@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.2] - 21/12/2024
+
+### Fixed
+- Fixed the verification of an update of the package.
+
+### Improved
+- Improved documentation and logging.
+
 ## [1.0.0] - 05/10/2024
 
 ### Changed
