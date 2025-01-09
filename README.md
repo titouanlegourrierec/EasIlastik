@@ -33,8 +33,8 @@
       <img src="https://img.shields.io/pypi/v/EasIlastik.svg" alt="PyPI Version">
     </a>
     </a>
-        <a href="https://pepy.tech/project/EasIlastik">
-      <img src="https://pepy.tech/badge/EasIlastik" alt="Downloads">
+        <a href="https://pepy.tech/projects/easilastik">
+      <img src="https://static.pepy.tech/badge/easilastik" alt="Downloads">
     </a>
     <a href="https://github.com/psf/black">
       <img src="https://img.shields.io/badge/code%20style-black-000000.svg" alt="Code Style: Black">
