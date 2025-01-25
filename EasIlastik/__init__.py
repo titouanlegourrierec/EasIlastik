@@ -20,13 +20,14 @@ __author__ = "Titouan Le Gourrierec"
 __email__ = "titouanlegourrierec@icloud.com"
 __all__ = ["run_ilastik", "run_ilastik_probabilities", "color_treshold_probabilities"]
 
-import requests
 import subprocess
 import sys
 
+import requests
+
+from .run_ilastik import color_treshold_probabilities  # noqa
 from .run_ilastik import run_ilastik  # noqa
 from .run_ilastik import run_ilastik_probabilities  # noqa
-from .run_ilastik import color_treshold_probabilities  # noqa
 
 
 def get_installed_version():
@@ -54,15 +55,9 @@ def check_for_update():
 
         if latest_version != current_version:
             print("A new version of your package is available!")
-            user_input = (
-                input("Do you want to install the update? (yes/y to confirm): ")
-                .strip()
-                .lower()
-            )
+            user_input = input("Do you want to install the update? (yes/y to confirm): ").strip().lower()
             if user_input in ["yes", "y"]:
-                subprocess.check_call(
-                    [sys.executable, "-m", "pip", "install", "--upgrade", "EasIlastik"]
-                )
+                subprocess.check_call([sys.executable, "-m", "pip", "install", "--upgrade", "EasIlastik"])
                 print("The package has been updated successfully.")
             else:
                 print("Update skipped.")

@@ -29,29 +29,26 @@ def run_ilastik(
 
     Parameters:
     ----------
-        input_path : str
-            The path to the image file or folder to be processed.
-        model_path : str
-            The path to the Ilastik project file.
-        result_base_path : str
-            The base path where the result will be saved.
-        ilastik_script_path : str, optional
-            The path to the Ilastik script. If not provided, it will attempt to find the path automatically.
-        export_source : str, optional
-            The type of data to export. Default is "Simple Segmentation". Must be one of
-            ["Probabilities", "Simple Segmentation", "Uncertainty", "Features", "Labels"].
-        output_format : str, optional
-            The format of the output file. Default is "png". Must be one of["bmp", "gif", "hdr", "jpeg",
-            "jpg", "pbm", "pgm", "png", "pnm", "ppm", "ras", "tif", "tiff", "xv", "bmp sequence", "gif sequence",
-            "hdr sequence", "jpeg sequence", "jpg sequence", "pbm sequence", "pgm sequence", "png sequence",
-            "pnm sequence", "ppm sequence", "ras sequence", "tif sequence", "tiff sequence", "xv sequence",
-            "multipage tiff", "multipage tiff sequence", "hdf5", "compressed hdf5", "numpy, dvid"].
+    input_path : str
+        The path to the image file or folder to be processed.
+    model_path : str
+        The path to the Ilastik project file.
+    result_base_path : str
+        The base path where the result will be saved.
+    ilastik_script_path : str, optional
+        The path to the Ilastik script. If not provided, it will attempt to find the path automatically.
+    export_source : str, optional
+        The type of data to export. Default is "Simple Segmentation". Must be one of
+        ["Probabilities", "Simple Segmentation", "Uncertainty", "Features", "Labels"].
+    output_format : str, optional
+        The format of the output file. Default is "png". Must be one of["bmp", "gif", "hdr", "jpeg",
+        "jpg", "pbm", "pgm", "png", "pnm", "ppm", "ras", "tif", "tiff", "xv", "bmp sequence", "gif sequence",
+        "hdr sequence", "jpeg sequence", "jpg sequence", "pbm sequence", "pgm sequence", "png sequence",
+        "pnm sequence", "ppm sequence", "ras sequence", "tif sequence", "tiff sequence", "xv sequence",
+        "multipage tiff", "multipage tiff sequence", "hdf5", "compressed hdf5", "numpy, dvid"].
     """
-
     if ilastik_script_path is None:
-        logging.error(
-            "ilastik_script_path is None. Please provide the path to the Ilastik script."
-        )
+        logging.error("ilastik_script_path is None. Please provide the path to the Ilastik script.")
         return
 
     # fmt: off
@@ -64,9 +61,7 @@ def run_ilastik(
     # fmt: on
 
     if not os.path.isfile(input_path) and not os.path.isdir(input_path):
-        raise FileNotFoundError(
-            f"input_path '{input_path}' is not a valid file or directory."
-        )
+        raise FileNotFoundError(f"input_path '{input_path}' is not a valid file or directory.")
 
     if export_source not in ALLOWED_SOURCES:
         raise ValueError(f"Invalid export_source. Allowed values are {ALLOWED_SOURCES}")
@@ -103,10 +98,7 @@ def run_ilastik(
         "--project=" + model_path,
         "--export_source=" + export_source,
         "--output_format=" + output_format,
-        "--output_filename_format="
-        + result_base_path
-        + "{nickname}_"
-        + export_source.replace(" ", "_"),
+        "--output_filename_format=" + result_base_path + "{nickname}_" + export_source.replace(" ", "_"),
         *image_arg,
     ]
 
@@ -116,9 +108,7 @@ def run_ilastik(
         logging.info(f"Conversion of {input_path} completed successfully.")
     except subprocess.CalledProcessError as e:
         print("Error during conversion : ", e)
-        raise RuntimeError(
-            "Error during Ilastik execution. See console output for details."
-        )
+        raise RuntimeError("Error during Ilastik execution. See console output for details.")
 
 
 ######################################################################################################
@@ -139,22 +129,22 @@ def process_single_file(
 
     Parameters:
     -----------
-        file_path : str
-            Path to the .h5 file.
-        threshold : float
-            Threshold value for color mapping. Pixels with maximum value greater than this threshold will
-            be colored according to the color map.
-        below_threshold_color : list
-            RGB color for values below the threshold. Must be a list of 3 integers between 0 and 255.
-        channel_colors : list
-            List of RGB colors for each channel. Each color must be a list of 3 integers between 0 and 255.
-        deletion : bool, optional
-            If True, the original .h5 file will be deleted after processing. Default is True.
+    file_path : str
+        Path to the .h5 file.
+    threshold : float
+        Threshold value for color mapping. Pixels with maximum value greater than this threshold will
+        be colored according to the color map.
+    below_threshold_color : list
+        RGB color for values below the threshold. Must be a list of 3 integers between 0 and 255.
+    channel_colors : list
+        List of RGB colors for each channel. Each color must be a list of 3 integers between 0 and 255.
+    deletion : bool, optional
+        If True, the original .h5 file will be deleted after processing. Default is True.
 
     Returns:
     ---------
-        None
-            The function saves the color image in the same location as the input file with a .png extension.
+    None
+        The function saves the color image in the same location as the input file with a .png extension.
     """
 
     if not os.path.exists(file_path):
@@ -210,18 +200,14 @@ def process_single_file(
     colors = np.array([below_threshold_color] + channel_colors)
 
     # Convert the below_threshold_color to a numpy array and add two new axes to match the shape of max_values[..., np.newaxis]
-    below_threshold_color_array = np.array(below_threshold_color)[
-        np.newaxis, np.newaxis, :
-    ]
+    below_threshold_color_array = np.array(below_threshold_color)[np.newaxis, np.newaxis, :]
 
     # Use numpy's take function to create a color map. The color map is an array of colors corresponding to the indices.
     color_map = np.take(colors, indices + 1, axis=0)
 
     # Use numpy's where function to create the color image. If the maximum value of a pixel is greater than the threshold,
     # the pixel's color is taken from the color map. Otherwise, the pixel's color is set to below_threshold_color.
-    color_image = np.where(
-        max_values[..., np.newaxis] > threshold, color_map, below_threshold_color_array
-    )
+    color_image = np.where(max_values[..., np.newaxis] > threshold, color_map, below_threshold_color_array)
 
     # Convert the color image to uint8 type for compatibility with OpenCV's imwrite function.
     color_image_uint8 = color_image.astype(np.uint8)
@@ -229,9 +215,7 @@ def process_single_file(
     # Save the color image
     file_name, extension = os.path.splitext(file_path)
     new_path = file_name + ".png"
-    cv2.imwrite(
-        new_path, cv2.cvtColor(color_image_uint8, cv2.COLOR_RGB2BGR)
-    )  # cv2 uses BGR color format
+    cv2.imwrite(new_path, cv2.cvtColor(color_image_uint8, cv2.COLOR_RGB2BGR))  # cv2 uses BGR color format
 
     # Close the h5 file
     f.close()
@@ -249,19 +233,19 @@ def color_treshold_probabilities(
 
     Parameters:
     -----------
-        file_path : str
-            Path to the .h5 file.
-        threshold : float
-            Threshold value for color mapping. Pixels with maximum value greater than this threshold will be colored according to the color map.
-        below_threshold_color : list
-            RGB color for values below the threshold. Must be a list of 3 integers between 0 and 255.
-        channel_colors : list
-            List of RGB colors for each channel. Each color must be a list of 3 integers between 0 and 255.
+    file_path : str
+        Path to the .h5 file.
+    threshold : float
+        Threshold value for color mapping. Pixels with maximum value greater than this threshold will be colored according to the color map.
+    below_threshold_color : list
+        RGB color for values below the threshold. Must be a list of 3 integers between 0 and 255.
+    channel_colors : list
+        List of RGB colors for each channel. Each color must be a list of 3 integers between 0 and 255.
 
     Returns:
     -----------
-        color_image_uint8 : np.ndarray
-            The color image as a numpy array in uint8 format. The color image is in BGR format, which is compatible with OpenCV's imwrite function.
+    color_image_uint8 : np.ndarray
+        The color image as a numpy array in uint8 format. The color image is in BGR format, which is compatible with OpenCV's imwrite function.
     """
 
     if not os.path.exists(file_path):
@@ -317,18 +301,14 @@ def color_treshold_probabilities(
     colors = np.array([below_threshold_color] + channel_colors)
 
     # Convert the below_threshold_color to a numpy array and add two new axes to match the shape of max_values[..., np.newaxis]
-    below_threshold_color_array = np.array(below_threshold_color)[
-        np.newaxis, np.newaxis, :
-    ]
+    below_threshold_color_array = np.array(below_threshold_color)[np.newaxis, np.newaxis, :]
 
     # Use numpy's take function to create a color map. The color map is an array of colors corresponding to the indices.
     color_map = np.take(colors, indices + 1, axis=0)
 
     # Use numpy's where function to create the color image. If the maximum value of a pixel is greater than the threshold,
     # the pixel's color is taken from the color map. Otherwise, the pixel's color is set to below_threshold_color.
-    color_image = np.where(
-        max_values[..., np.newaxis] > threshold, color_map, below_threshold_color_array
-    )
+    color_image = np.where(max_values[..., np.newaxis] > threshold, color_map, below_threshold_color_array)
 
     color_image_uint8 = color_image.astype(np.uint8)
     color_image_uint8 = cv2.cvtColor(color_image_uint8, cv2.COLOR_RGB2BGR)
@@ -351,19 +331,19 @@ def treshold_probabilities(
 
     Parameters:
     -----------
-        file_or_dir_path : str
-            Path to the .h5 file or directory containing .h5 files.
-        threshold : float
-            Threshold value for color mapping.
-        below_threshold_color : list
-            RGB color for values below the threshold.
-        channel_colors : list
-            List of RGB colors for each channel.
+    file_or_dir_path : str
+        Path to the .h5 file or directory containing .h5 files.
+    threshold : float
+        Threshold value for color mapping.
+    below_threshold_color : list
+        RGB color for values below the threshold.
+    channel_colors : list
+        List of RGB colors for each channel.
 
     Returns:
     -----------
-        None
-            The function saves the color image(s) in the same location as the input file(s) with a .png extension.
+    None
+        The function saves the color image(s) in the same location as the input file(s) with a .png extension.
     """
     if os.path.isdir(file_or_dir_path):
         # If the path is a directory, apply the function to all .h5 files in the directory
@@ -379,9 +359,7 @@ def treshold_probabilities(
                 )
     else:
         # If the path is not a directory, assume it's a file and apply the function to it
-        process_single_file(
-            file_or_dir_path, threshold, below_threshold_color, channel_colors, deletion
-        )
+        process_single_file(file_or_dir_path, threshold, below_threshold_color, channel_colors, deletion)
 
 
 ###############################################################################################################
@@ -405,25 +383,25 @@ def run_ilastik_probabilities(
 
     Parameters:
     -----------
-        input_path : str
-            The path to the image file or folder to be processed.
-        model_path : str
-            The path to the Ilastik project file.
-        result_base_path : str
-            The base path where the result will be saved.
-        ilastik_script_path : str, optional
-            The path to the Ilastik script. If not provided, it will attempt to find the path automatically.
-        threshold : int
-            The threshold above which a channel's value must be for the pixel to take its color.
-        below_threshold_color : list
-            The color for pixels where the maximum value is below the threshold. Must be a list of 3 integers between 0 and 255.
-        channel_colors : list
-            The colors for the channels. Must be a list of lists, where each inner list is a list of 3 integers between 0 and 255.
+    input_path : str
+        The path to the image file or folder to be processed.
+    model_path : str
+        The path to the Ilastik project file.
+    result_base_path : str
+        The base path where the result will be saved.
+    ilastik_script_path : str, optional
+        The path to the Ilastik script. If not provided, it will attempt to find the path automatically.
+    threshold : int
+        The threshold above which a channel's value must be for the pixel to take its color.
+    below_threshold_color : list
+        The color for pixels where the maximum value is below the threshold. Must be a list of 3 integers between 0 and 255.
+    channel_colors : list
+        The colors for the channels. Must be a list of lists, where each inner list is a list of 3 integers between 0 and 255.
 
     Returns:
     ---------
-        None
-            The function saves the color images in the same location as the input file(s) with a .png extension.
+    None
+        The function saves the color images in the same location as the input file(s) with a .png extension.
     """
     # Run Ilastik to create h5 files
     run_ilastik(
@@ -436,6 +414,4 @@ def run_ilastik_probabilities(
     )
 
     # Create color images from the h5 files
-    treshold_probabilities(
-        result_base_path, threshold, below_threshold_color, channel_colors, deletion
-    )
+    treshold_probabilities(result_base_path, threshold, below_threshold_color, channel_colors, deletion)

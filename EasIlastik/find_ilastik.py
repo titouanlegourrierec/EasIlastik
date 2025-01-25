@@ -8,16 +8,14 @@ logging.basicConfig(level=logging.INFO)
 
 def get_os() -> str:
     """
-    This function returns the name of the operating system on which the Python
-    interpreter is running.
+    This function returns the name of the operating system on which the Python interpreter is running.
 
     Returns:
     ----------
-        str
-            The name of the operating system. Possible values are 'Linux',
-            'Darwin' (for MacOS), or 'Windows'.
+    str
+        The name of the operating system. Possible values are 'Linux',
+        'Darwin' (for MacOS), or 'Windows'.
     """
-
     return platform.system()
 
 
@@ -27,17 +25,16 @@ def find_file(filename: str, start_path: str) -> str:
 
     Parameters:
     ----------
-        filename : str
-            The name of the file to search for.
-        start_path : str
-            The path to start the search from.
+    filename : str
+        The name of the file to search for.
+    start_path : str
+        The path to start the search from.
 
     Returns:
     ----------
-        str
-            The path to the file if found, else None.
+    str
+        The path to the file if found, else None.
     """
-
     start_time = time.time()
 
     try:
@@ -56,15 +53,13 @@ def find_file(filename: str, start_path: str) -> str:
 
 def find_ilastik() -> str:
     """
-    This function searches for the Ilastik executable file on the current
-    operating system.
+    This function searches for the Ilastik executable file on the current operating system.
 
     Returns:
     ----------
-        str
-            The path to the Ilastik executable if found, else None.
+    str
+        The path to the Ilastik executable if found, else None.
     """
-
     os_name = get_os()
 
     if os_name == "Darwin" or os_name == "Linux":
