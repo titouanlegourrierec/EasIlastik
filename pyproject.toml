@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "easilastik"
-version = "1.0.2"
+version = "2.0.0a1"
 description = "Easy integration of Ilastik segmentation models in Python."
 authors = [
     { name = "Titouan Le Gourrierec", email = "titouanlegourrierec@icloud.com" }
