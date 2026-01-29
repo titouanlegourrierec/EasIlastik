@@ -1,22 +1,22 @@
-import glob
-import os
+# Copyright (C) 2026 Titouan Le Gourrierec
+"""Utility functions for EasIlastik package."""
+
+from pathlib import Path
 
 
 def get_image_paths(image_folder: str) -> list:
     """
-    This function retrieves the paths of all image files in a specified folder.
+    Get a list of image file paths from the specified folder.
 
-    Parameters:
+    Parameters
     ----------
     image_folder : str
         The path to the folder containing the images.
 
-    Returns:
-    ----------
+    Returns
+    -------
     list
         A list of paths to the image
-    """
-    # Use glob to get all file paths in the image_folder
-    image_paths = glob.glob(os.path.join(image_folder, "*"))
 
-    return image_paths
+    """
+    return list(Path(image_folder).glob("*"))

@@ -1,37 +1,44 @@
+# Copyright (C) 2026 Titouan Le Gourrierec
+"""Find the Ilastik executable on the current operating system."""
+
 import logging
 import os
 import platform
 import time
+from pathlib import Path
 
-logging.basicConfig(level=logging.INFO)
+
+logging.basicConfig(level=logging.INFO, format="%(message)s")
+logger = logging.getLogger(__name__)
+
+TIME_OUT = 60
 
 
 def get_os() -> str:
     """
-    This function returns the name of the operating system on which the Python interpreter is running.
+    Return the name of the operating system on which the Python interpreter is running.
 
-    Returns:
-    ----------
+    Returns
+    -------
     str
-        The name of the operating system. Possible values are 'Linux',
-        'Darwin' (for MacOS), or 'Windows'.
+        The name of the operating system. Possible values are 'Linux', 'Darwin' (for MacOS), or 'Windows'.
     """
     return platform.system()
 
 
 def find_file(filename: str, start_path: str) -> str:
     """
-    This function searches for a specified file starting from a specified path.
+    Search for a specified file starting from a specified path.
 
-    Parameters:
+    Parameters
     ----------
     filename : str
         The name of the file to search for.
     start_path : str
         The path to start the search from.
 
-    Returns:
-    ----------
+    Returns
+    -------
     str
         The path to the file if found, else None.
     """
@@ -39,37 +46,39 @@ def find_file(filename: str, start_path: str) -> str:
 
     try:
         for root, _, files in os.walk(start_path):
-            if time.time() - start_time > 60:
-                logging.warning("Search timed out.")
+            if time.time() - start_time > TIME_OUT:
+                logger.warning("Search timed out.")
                 return ""
             if filename in files:
-                return os.path.join(root, filename)
-    except Exception as e:
-        logging.error(f"An error occurred while searching for {filename}: {e}")
+                return str(Path(root) / filename)
+    except Exception:
+        msg = f"An error occurred while searching for {filename}"
+        logger.exception(msg)
         return ""
 
     return ""
 
 
-def find_ilastik() -> str:
+def find_ilastik() -> str | None:
     """
-    This function searches for the Ilastik executable file on the current operating system.
+    Search for the Ilastik executable file on the current operating system.
 
-    Returns:
-    ----------
-    str
+    Returns
+    -------
+    str | None
         The path to the Ilastik executable if found, else None.
     """
     os_name = get_os()
 
-    if os_name == "Darwin" or os_name == "Linux":
+    if os_name in {"Darwin", "Linux"}:
         filename = "run_ilastik.sh"
-        start_path = "/Applications" if os_name == "Darwin" else "/"
-    elif os_name == "Windows":
+        start_path = "/Applications" if os_name == "Darwin" else "/"  # noqa: PLR2004
+    elif os_name == "Windows":  # noqa: PLR2004
         filename = "ilastik.exe"
         start_path = "C:\\"
     else:
-        logging.error(f"Unsupported OS: {os_name}")
+        msg = f"Unsupported OS: {os_name}"
+        logger.error(msg)
         return None
 
     return find_file(filename, start_path)
