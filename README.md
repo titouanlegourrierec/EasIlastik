@@ -1,5 +1,7 @@
 <!----------------------------------------------------------------------->
+
 <a name="readme-top"></a>
+
 <!----------------------------------------------------------------------->
 
 <table width="100%" style="border: none;">
@@ -14,14 +16,16 @@
 </table>
 
 <!----------------------------------------------------------------------->
+
 <!----------------------------------------------------------------------->
 
 <!-- PROJECT LOGO -->
+
 <br />
 <div align="center">
   <h3 align="center">EasIlastik </h3>
 
-  <p align="center">
+<p align="center">
     A package to facilitate the use of image segmentation model trained on Ilastik in Python
     <br />
     <a href="https://github.com/titouanlegourrierec/EasIlastik/wiki"><strong>Explore the docs »</strong></a>
@@ -44,9 +48,8 @@
   </p>
 </div>
 
-
-
 <!-- TABLE OF CONTENTS -->
+
 <details>
   <summary>Table of Contents</summary>
   <ol>
@@ -70,6 +73,7 @@
 </details>
 
 <!----------------------------------------------------------------------->
+
 <!----------------------------------------------------------------------->
 
 ## About The Project
@@ -81,42 +85,42 @@
 This package provides seamless integration of pre-trained image segmentation models from Ilastik into Python workflows, empowering users with efficient and intuitive image segmentation capabilities for diverse applications.
 
 <!----------------------------------------------------------------------->
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 <!----------------------------------------------------------------------->
 
-
 ### Built With
-* [![Python][Python-badge]][Python-url]
-* [![OpenCV][OpenCV-badge]][OpenCV-url]
-* ![Shell Script][ShellScript-badge]
 
+- [![Python][python-badge]][python-url]
+- [![OpenCV][opencv-badge]][opencv-url]
+- ![Shell Script][shellscript-badge]
 
 <!----------------------------------------------------------------------->
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 <!----------------------------------------------------------------------->
 
 ## Getting Started
-### Prerequisites 
 
-* **Ilastik software**: To train your own model for image segmentation, please download the Ilastik software tailored to your computer's operating system from: https://www.ilastik.org/download.
+### Prerequisites
+
+- **Ilastik software**: To train your own model for image segmentation, please download the Ilastik software tailored to your computer's operating system from: https://www.ilastik.org/download.
 
 ### Train a model
 
-* To train your own model on Ilastik and properly adjust the different parameters, please refer to [this documentation](https://github.com/titouanlegourrierec/EasIlastik/wiki/Train-a-model-on-Ilastik).
-
-
-
+- To train your own model on Ilastik and properly adjust the different parameters, please refer to [this documentation](https://github.com/titouanlegourrierec/EasIlastik/wiki/Train-a-model-on-Ilastik).
 
 <!----------------------------------------------------------------------->
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 <!----------------------------------------------------------------------->
-
 
 ## Usage
 
 For usage examples of this package, please refer to the [Example Notebook](https://github.com/titouanlegourrierec/EasIlastik/blob/1be43ebb76bccec6917e05367fbb7e48b184efdc/Examples/example-notebook.ipynb).
 
 ### Process a single image
+
 ```python
 EasIlastik.run_ilastik(input_path = "path/to/your/image.jpg", # The path of the image to process
                        model_path = "path/to/your/model.ilp",
@@ -124,11 +128,13 @@ EasIlastik.run_ilastik(input_path = "path/to/your/image.jpg", # The path of the 
                        export_source = "Simple Segmentation",
                        output_format = "png")
 ```
+
 <p align="center">
   <img src="https://raw.githubusercontent.com/titouanlegourrierec/EasIlastik/main/assets/run_ilastik_image.png" alt="run_ilastik_image" width="50%">
 </p>
 
 ### Process a folder of images
+
 ```python
 EasIlastik.run_ilastik(input_path = "path/to/input/folder", # The path of the folder to process
                        model_path = "path/to/your/model.ilp",
@@ -136,11 +142,13 @@ EasIlastik.run_ilastik(input_path = "path/to/input/folder", # The path of the fo
                        export_source = "Simple Segmentation",
                        output_format = "png")
 ```
+
 <p align="center">
   <img src="https://raw.githubusercontent.com/titouanlegourrierec/EasIlastik/main/assets/run_ilastik_folder.png" alt="run_ilastik_folder" width="70%">
 </p>
 
 ### Show probabilities
+
 ```python
 EasIlastik.run_ilastik(input_path = "path/to/input/image",
                        model_path = "path/to/model.ilp",
@@ -151,11 +159,13 @@ EasIlastik.run_ilastik(input_path = "path/to/input/image",
 output_path = "path/to/output/image.h5"
 image = EasIlastik.color_treshold_probabilities(output_path, threshold, below_threshold_color, channel_colors)
 ```
+
 <p align="center">
   <img src="https://raw.githubusercontent.com/titouanlegourrierec/EasIlastik/main/assets/run_ilastik_show_probabilities.png" alt="run_ilastik_probabilities" width="70%">
 </p>
 
 ### Run with probabilities
+
 ```python
 EasIlastik.run_ilastik_probabilities(input_path = "path/to/input/folder",
                                      model_path = "path/to/model.ilp",
@@ -165,18 +175,18 @@ EasIlastik.run_ilastik_probabilities(input_path = "path/to/input/folder",
                                      channel_colors = [[63, 63, 63], [127, 127, 127], ...] # colors for the different channels
                                      )
 ```
+
 <p align="center">
   <img src="https://raw.githubusercontent.com/titouanlegourrierec/EasIlastik/main/assets/run_ilastik_run_probabilities.png" alt="run_ilastik_probabilities" width="70%">
 </p>
 
-
 <!----------------------------------------------------------------------->
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 <!----------------------------------------------------------------------->
 
-
-
 <!-- ROADMAP -->
+
 <!-- ## Roadmap
 
 - [x] Add Changelog
@@ -191,9 +201,8 @@ See the [open issues](https://github.com/othneildrew/Best-README-Template/issues
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p> -->
 
-
-
 <!-- CONTRIBUTING -->
+
 <!-- ## Contributing
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
@@ -209,12 +218,12 @@ Don't forget to give the project a star! Thanks again!
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p> -->
 
-
 ## License
 
 Distributed under the GNU License like the Ilastik software. See [`LICENSE`](https://github.com/titouanlegourrierec/EasIlastik/blob/1be43ebb76bccec6917e05367fbb7e48b184efdc/LICENCE) for more information.
 
 <!----------------------------------------------------------------------->
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 <!----------------------------------------------------------------------->
 
@@ -222,32 +231,27 @@ Distributed under the GNU License like the Ilastik software. See [`LICENSE`](htt
 
 LE GOURRIEREC Titouan - [titouanlegourrierec@icloud.com](mailto:titouanlegourrierec@icloud.com)
 
-Repository Link: [https://github.com/titouanlegourrierec/EasIlastik](https://github.com/titouanlegourrierec/EasIlastik)  
+Repository Link: [https://github.com/titouanlegourrierec/EasIlastik](https://github.com/titouanlegourrierec/EasIlastik)
 Pypi Link : [https://pypi.org/project/EasIlastik/](https://pypi.org/project/EasIlastik/)
 
-
 <!----------------------------------------------------------------------->
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 <!----------------------------------------------------------------------->
-
 
 ## Acknowledgments
 
-* [Ilastik Software](https://www.ilastik.org) : An interactive interface to annotate images to segment.
+- [Ilastik Software](https://www.ilastik.org) : An interactive interface to annotate images to segment.
 
 <!----------------------------------------------------------------------->
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 <!----------------------------------------------------------------------->
 
-
-
 <!-- MARKDOWN LINKS & IMAGES -->
 
-
-[Python-badge]: https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54
-[Python-url]: https://www.python.org
-
-[OpenCV-badge]: https://img.shields.io/badge/opencv-%23white.svg?style=for-the-badge&logo=opencv&logoColor=white
-[OpenCV-url]: https://opencv.org
-
-[ShellScript-badge]: https://img.shields.io/badge/shell_script-%23121011.svg?style=for-the-badge&logo=gnu-bash&logoColor=white
+[opencv-badge]: https://img.shields.io/badge/opencv-%23white.svg?style=for-the-badge&logo=opencv&logoColor=white
+[opencv-url]: https://opencv.org
+[python-badge]: https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54
+[python-url]: https://www.python.org
+[shellscript-badge]: https://img.shields.io/badge/shell_script-%23121011.svg?style=for-the-badge&logo=gnu-bash&logoColor=white
