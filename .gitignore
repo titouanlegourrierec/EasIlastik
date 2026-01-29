@@ -1,14 +1,47 @@
-# macOS specific files
+# VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+# Local History for Visual Studio Code
+.history/
+
+
+# Mac/OSX
 .DS_Store
 
-# Python specific files
+
+# Python-generated files
 __pycache__/
-*.py[cod]
-*.egg
-*.egg-info/
-dist/
+*.py[oc]
 build/
-env/
+dist/
+wheels/
+*.egg-info
+
 
 # Jupyter Notebook
-test.ipynb
+.ipynb_checkpoints
+
+
+# Virtual environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+
+# Cache
+.ruff_cache/
+.mypy_cache/
+.pytest_cache/
+
+
+# Project specific
+draft/
+draft.ipynb
