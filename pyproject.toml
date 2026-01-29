@@ -1,0 +1,75 @@
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "easilastik"
+version = "1.0.2"
+description = "Easy integration of Ilastik segmentation models in Python."
+authors = [
+    { name = "Titouan Le Gourrierec", email = "titouanlegourrierec@icloud.com" }
+]
+readme = "README.md"
+license = "GPL-3.0"
+license-files = ["LICENSE"]
+requires-python = ">=3.10"
+dependencies = [
+    "h5py>=3.15.1",
+    "numpy>=2.2.6",
+    "opencv-python>=4.13.0.90",
+    "requests>=2.32.5",
+]
+
+classifiers = [
+    "Operating System :: OS Independent",
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+]
+
+
+[tool.setuptools.packages.find]
+include = ["easilastik*"]
+exclude = ["assets*", "results*", "Examples*"]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.14.14",
+    "ty>=0.0.14",
+]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 119
+
+[tool.ruff.lint.flake8-copyright]
+author = "Titouan Le Gourrierec"
+
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"
+
+[tool.ruff.lint]
+# preview = true
+select = ["ALL"]
+ignore = [
+    "COM812",   # Checks for the absence of trailing commas. (conflict with the formatter)
+    "D203",     # Checks for docstrings on class definitions that are not preceded by a blank line. (conflict with D211)
+    "D212",     # Checks for docstring summary lines that are not positioned on the first physical line of the docstring. (conflict with D213)
+]
+
+[tool.ruff.lint.pylint]
+max-args = 10
+allow-magic-value-types = ["int"]
+
+[tool.ruff.lint.isort]
+lines-after-imports = 2
+
+[tool.ruff.format]
+quote-style = "double"              # Like Black, use double quotes for strings.
+indent-style = "space"              # Like Black, indent with spaces, rather than tabs.
+skip-magic-trailing-comma = false   # Like Black, respect magic trailing commas.
+line-ending = "auto"                # Like Black, automatically detect the appropriate line ending.
