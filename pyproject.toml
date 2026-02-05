@@ -38,10 +38,10 @@ exclude = ["assets*", "results*", "Examples*"]
 
 [dependency-groups]
 dev = [
-    "prek>=0.3.0",
-    "ruff>=0.14.14",
+    "prek>=0.3.1",
+    "ruff>=0.15.0",
     "twine>=6.2.0",
-    "ty>=0.0.14",
+    "ty>=0.0.15",
 ]
 
 [tool.ruff]
